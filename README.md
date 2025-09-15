@@ -1,6 +1,6 @@
 # Atelier Framework Web côté serveur - AU 2025/2026
 
-Ce repository contient l'ensemble des travaux pratiques (TP) réalisés dans le cadre du cours **Atelier Framework Web côté serveur** dispensé par **Abdellatif Linda** pendant l'année universitaire 2025/2026.
+Ce repository contient l'ensemble des travaux pratiques réalisés dans le cadre du cours **Atelier Framework Web côté serveur** dispensé par **Abdellatif Linda** pendant l'année universitaire 2025/2026.
 
 ## 📋 Table des matières
 
@@ -8,14 +8,13 @@ Ce repository contient l'ensemble des travaux pratiques (TP) réalisés dans le 
 - [Prérequis techniques](#prérequis-techniques)
 - [Configuration de l'environnement](#configuration-de-lenvironnement)
 - [Structure du repository](#structure-du-repository)
-- [TPs réalisés](#tps-réalisés)
 - [Technologies utilisées](#technologies-utilisées)
 - [Installation et utilisation](#installation-et-utilisation)
 - [Ressources utiles](#ressources-utiles)
 
 ## 🎯 Vue d'ensemble
 
-Ce repository documente l'apprentissage des frameworks web côté serveur, avec un focus principal sur **Symfony 4**. Chaque TP explore différents aspects du développement web moderne, depuis l'initiation jusqu'aux concepts avancés.
+Ce repository documente l'apprentissage des frameworks web côté serveur, avec un focus principal sur **Symfony 4**. Tous les travaux pratiques du semestre seront partagés ici, explorant différents aspects du développement web moderne, depuis l'initiation jusqu'aux concepts avancés.
 
 ### Objectifs pédagogiques
 - Maîtriser l'architecture MVC
@@ -44,7 +43,7 @@ Ce repository documente l'apprentissage des frameworks web côté serveur, avec 
 1. Télécharger [Laragon](https://laragon.org/download/)
 2. Installer [Composer](https://getcomposer.org/download)
 3. Cloner ce repository dans `C:\laragon\www\`
-4. Suivre les instructions spécifiques de chaque TP
+4. Suivre les instructions spécifiques de chaque dossier
 
 ### Variables d'environnement
 ```bash
@@ -59,44 +58,16 @@ Ce repository documente l'apprentissage des frameworks web côté serveur, avec 
 ```
 atelier-framework-web/
 ├── README.md                    # Ce fichier
-├── TP1-initiation/             # Premier TP - Installation et configuration
-│   ├── README.md               # Instructions spécifiques au TP1
-│   ├── sf4/                    # Projet Symfony créé
+├── [dossiers-des-tp]/          # Dossiers des travaux pratiques
+│   ├── README.md               # Instructions spécifiques
+│   ├── src/                    # Code source
 │   └── documentation/          # Notes et captures d'écran
-├── TP2-[nom-du-tp]/           # Deuxième TP
-│   ├── README.md
-│   ├── src/
-│   └── documentation/
-├── TP3-[nom-du-tp]/           # Troisième TP
-├── ...                        # Autres TPs
 ├── resources/                 # Ressources communes
 │   ├── docs/                  # Documentation générale
 │   ├── templates/             # Templates réutilisables
 │   └── assets/                # Images, CSS communs
 └── .gitignore                 # Fichiers à ignorer par Git
 ```
-
-## 📚 TPs réalisés
-
-### ✅ TP1 - Initiation
-**Objectif** : Installation et configuration de l'environnement Symfony
-- [x] Installation de Laragon
-- [x] Configuration de Composer
-- [x] Création du premier projet Symfony
-- [x] Test du serveur intégré
-
-**Status** : Terminé ✅  
-**Dossier** : [`TP1-initiation/`](./TP1-initiation/)
-
-### 🔄 TP2 - [À compléter]
-**Objectif** : [Sera mis à jour lors du prochain TP]
-- [ ] [Objectifs à définir]
-
-**Status** : En attente 🔄  
-**Dossier** : [`TP2-[nom]/`](./TP2-[nom]/)
-
-### ⏳ TPs suivants
-Les prochains TPs seront ajoutés au fur et à mesure du semestre.
 
 ## 🚀 Technologies utilisées
 
@@ -119,12 +90,12 @@ git clone [URL-DU-REPOSITORY] atelier-framework-web
 cd atelier-framework-web
 ```
 
-### Utilisation d'un TP spécifique
+### Utilisation générale
 ```bash
-# Naviguer vers un TP
-cd TP1-initiation/
+# Naviguer vers un dossier de travail
+cd [nom-du-dossier]/
 
-# Installer les dépendances
+# Installer les dépendances (si nécessaire)
 composer install
 
 # Lancer le serveur (si applicable)
@@ -133,15 +104,15 @@ php bin/console server:run
 
 ### Bonnes pratiques Git
 ```bash
-# Créer une branche pour chaque TP
-git checkout -b tp2-[nom-du-tp]
+# Créer une branche pour chaque travail
+git checkout -b [nom-de-la-branche]
 
 # Commit réguliers avec messages clairs
 git add .
-git commit -m "TP2: Implémentation du contrôleur principal"
+git commit -m "[Description des modifications]"
 
 # Push vers le repository
-git push origin tp2-[nom-du-tp]
+git push origin [nom-de-la-branche]
 ```
 
 ## 📖 Ressources utiles
@@ -162,18 +133,16 @@ git push origin tp2-[nom-du-tp]
 - [Stack Overflow - Symfony](https://stackoverflow.com/questions/tagged/symfony)
 
 ## 👨‍🏫 Informations du cours
-
-**Professeur** : Abdellatif Linda  
+ 
 **Cours** : Atelier Framework Web côté serveur  
 **Année universitaire** : 2025/2026  
-**Institution** : [Nom de l'université/école]
 
 ## 📝 Notes importantes
 
-- Chaque TP possède son propre README avec les instructions détaillées
+- Chaque dossier de travail possède ses propres instructions détaillées
 - Les projets sont configurés pour fonctionner avec Laragon (adaptation de XAMPP)
 - Tous les codes sont commentés en français pour faciliter la compréhension
-- Les captures d'écran et documentation sont dans le dossier `documentation/` de chaque TP
+- Les captures d'écran et documentation sont organisées dans les dossiers appropriés
 
 ## 🤝 Contribution
 
