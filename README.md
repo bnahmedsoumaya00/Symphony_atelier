@@ -1,6 +1,6 @@
 # Atelier Framework Web côté serveur - AU 2025/2026
 
-Ce repository contient l'ensemble des travaux pratiques réalisés dans le cadre du cours **Atelier Framework Web côté serveur** dispensé par **Abdellatif Linda** pendant l'année universitaire 2025/2026.
+Ce repository contient l'ensemble des travaux pratiques réalisés dans le cadre du cours **Atelier Framework Web côté serveur**  pendant l'année universitaire 2025/2026.
 
 ## 📋 Table des matières
 
