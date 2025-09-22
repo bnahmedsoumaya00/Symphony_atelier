@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+<h1>{{ title }}</h1>
+
+<form method="post">
+    <label for="age">Entrez votre âge :</label>
+    <input type="number" id="age" name="age" value="{{ age|default('') }}" required>
+    <button type="submit">Valider</button>
+</form>
+
+{% if age is defined and age is not null %}
+    {% if age > 18 %}
+        <p>Tu es majeur</p>
+        <script>
+            alert("Résultat du test : Tu es majeur ({{ age }} ans)");
+        </script>
+    {% else %}
+        <p>Tu es mineur</p>
+        <script>
+            alert("Résultat du test : Tu es mineur ({{ age }} ans)");
+        </script>
+    {% endif %}
+{% endif %}
+{% endblock %}
