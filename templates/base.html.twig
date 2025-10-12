@@ -1,40 +1,135 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
-    <link rel="stylesheet" href="https://bootswatch.com/5/flatly/bootstrap.min.css">
-    {% block stylesheets %}{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Mon Blog Symfony – Soumaya{% endblock %}</title>
+    <!-- Bootstrap 5 CSS (we'll override colors with our own) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* 🌸 Soft lavender background */
+        body {
+            background-color: #F5F0FF;
+            padding-top: 72px;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        /* 🟣 Deep purple navbar */
+        .navbar {
+            background: linear-gradient(135deg, #6A0DAD, #8A2BE2) !important;
+            box-shadow: 0 2px 10px rgba(106, 13, 173, 0.3);
+        }
+
+        .navbar-brand,
+        .nav-link {
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .navbar-brand:hover,
+        .nav-link:hover {
+            color: #f8f9ff !important;
+            transform: translateY(-1px);
+        }
+
+        /* 🟣 Custom buttons */
+        .btn-primary {
+            background-color: #8A2BE2 !important;
+            border-color: #8A2BE2 !important;
+            font-weight: 500;
+        }
+        .btn-primary:hover {
+            background-color: #7a1ad2 !important;
+            border-color: #7a1ad2 !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(138, 43, 226, 0.3);
+        }
+
+        /* 🟣 Cards */
+        .card {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(106, 13, 173, 0.1);
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 20px rgba(138, 43, 226, 0.25);
+        }
+
+        .text-purple {
+            color: #8A2BE2 !important;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 4rem;
+            padding: 2rem 0;
+            background: #F0E6FF;
+            border-top: 1px solid #E6D9FF;
+            color: #6A0DAD;
+        }
+
+        /* Responsive tweaks */
+        @media (max-width: 768px) {
+            .navbar-brand {
+                font-size: 1.25rem;
+            }
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+            .d-md-flex {
+                display: block !important;
+            }
+        }
+    </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">Accueil</a>
-    <div class="collapse navbar-collapse" id="navbarColor01">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item"><a class="nav-link" href="/blog">Articles</a></li>
-        <li class="nav-item"><a class="nav-link" href="/blog/new">Créer un article</a></li>
-        
-        {# Boutons conditionnels selon la page #}
-        {% if app.request.get('_route') == 'article_show' %}
-          <li class="nav-item"><a class="nav-link btn btn-warning btn-sm mx-1" href="{{ path('edit_article', {'id': app.request.get('id')}) }}">Modifier</a></li>
-          <li class="nav-item"><a class="nav-link btn btn-danger btn-sm mx-1" href="{{ path('delete_article', {'id': app.request.get('id')}) }}" onclick="return confirm('Êtes-vous sûr de supprimer cet article?');">Supprimer</a></li>
-        {% endif %}
-        
-        {% if app.request.get('_route') == 'edit_article' %}
-          <li class="nav-item"><a class="nav-link btn btn-info btn-sm mx-1" href="{{ path('article_show', {'id': app.request.get('id')}) }}">Voir détails</a></li>
-          <li class="nav-item"><a class="nav-link btn btn-danger btn-sm mx-1" href="{{ path('delete_article', {'id': app.request.get('id')}) }}" onclick="return confirm('Êtes-vous sûr de supprimer cet article?');">Supprimer</a></li>
-        {% endif %}
-        
-      </ul>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{{ path('app_home') }}">
+            🏠 Accueil
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('article_list') }}">📚 Articles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('new_article') }}">➕ Nouvel Article</a>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
 </nav>
 
 <div class="container">
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show rounded-3" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div class="alert alert-danger alert-dismissible fade show rounded-3" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    {% endfor %}
+
     {% block body %}{% endblock %}
 </div>
 
-{% block javascripts %}{% endblock %}
+<footer class="text-center">
+    <p class="mb-0">© {{ "now"|date("Y") }} – Mon Blog Symfony | Par Soumaya 💜</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -5,23 +5,30 @@ Détail de l'article – Soumaya
 {% endblock %}
 
 {% block body %}
-<article>
-    <h2>Titre de l'article</h2>
-    <div class="metadata">
-        Écrit le 08/09/2024 à 21:43 — catégorie Symfony
-    </div>
-    <div class="content">
-        <img src="http://via.placeholder.com/350x150" alt="Image d'article">
-        <p>
-            C'est mon premier projet Symfony à l'ISET Kélibia MDW3,
-            je suis <strong>Soumaya</strong> et je découvre ce framework
-            avec beaucoup d'enthousiasme !
-        </p>
-        <hr>
-        <p>
-            Ce texte représente le corps complet de l'article.  
-            Tu peux ajouter plusieurs paragraphes ou images ici.
-        </p>
-    </div>
-</article>
+<div class="container my-5">
+    <article class="card shadow">
+        <div class="card-body">
+            <h2 class="card-title display-6">Titre de l'article</h2>
+            <div class="metadata text-muted mb-4">
+                Écrit le 08/09/2024 à 21:43 — catégorie Symfony
+            </div>
+            <div class="content">
+                <img src="http://via.placeholder.com/350x150" alt="Image d'article" class="img-fluid rounded mb-3">
+                <p>
+                    C'est mon premier projet Symfony à l'ISET Kélibia MDW3,
+                    je suis <strong>Soumaya</strong> et je découvre ce framework
+                    avec beaucoup d'enthousiasme !
+                </p>
+                <hr>
+                <p>
+                    Ce texte représente le corps complet de l'article.  
+                    Tu peux ajouter plusieurs paragraphes ou images ici.
+                </p>
+            </div>
+            <div class="mt-4">
+                <a href="{{ path('app_home') }}" class="btn btn-outline-secondary">← Retour à l'accueil</a>
+            </div>
+        </div>
+    </article>
+</div>
 {% endblock %}

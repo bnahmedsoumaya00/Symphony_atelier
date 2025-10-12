@@ -23,7 +23,7 @@ class Article
     private $nom;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=0)
+     * @ORM\Column(type="decimal", precision=10, scale=2)  <!-- Allow 2 decimal places -->
      */
     private $prix;
 
@@ -40,19 +40,24 @@ class Article
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
-
         return $this;
     }
 
+    // ✅ Return as string (Doctrine stores decimal as string), but we'll cast in forms
     public function getPrix(): ?string
     {
         return $this->prix;
     }
 
-    public function setPrix(string $prix): self
+    // ✅ Accept float or string, but store as string (Doctrine requirement)
+    public function setPrix($prix): self
     {
-        $this->prix = $prix;
-
+        // Normalize: ensure it's a number with 2 decimals
+        if (is_numeric($prix)) {
+            $this->prix = number_format((float)$prix, 2, '.', '');
+        } else {
+            $this->prix = '0.00';
+        }
         return $this;
     }
 }

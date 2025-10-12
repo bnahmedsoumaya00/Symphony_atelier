@@ -1,21 +1,23 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\Article;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class BlogController extends AbstractController
 {
     /**
      * @Route("/", name="app_home")
      */
-    public function home()
+    public function home(): Response
     {
         return $this->render('blog/index.html.twig');
     }
@@ -23,16 +25,15 @@ class BlogController extends AbstractController
     /**
      * @Route("/blog", name="article_list")
      */
-    public function acceuil()
+    public function acceuil(EntityManagerInterface $em): Response
     {
-        //récupérer tous les articles de la table article de la BD
-        // et les mettre dans le tableau $articles
-        $articles = $this->getDoctrine()->getRepository(Article::class)->findAll();
-        return $this->render('blog/acceuil.html.twig', ['articles' => $articles]);
+        $articles = $em->getRepository(Article::class)->findAll();
+        return $this->render('blog/acceuil.html.twig', [
+            'articles' => $articles
+        ]);
     }
 
     /**
-     * Démo : transmettre un nom à la vue
      * @Route("/test-nom/{name}", name="app_test_nom")
      */
     public function testNom(string $name): Response
@@ -44,118 +45,119 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/save")
+     * @Route("/save", name="demo_save")
      */
-    public function save()
+    public function save(EntityManagerInterface $em): Response
     {
-        $entityManager = $this->getDoctrine()->getManager();
         $article = new Article();
-        $article->setNom('Article 3');
-        $article->setPrix(3000);
-        $entityManager->persist($article);
-        $entityManager->flush();
-        return new Response('Article enregisté avec id'.$article->getId());
-    }  
-
-    /**
-     * @Route("/blog/show", name="app_show")
-     */
-    public function show(): Response
-    {
-        return $this->render('blog/show.html.twig');
+        $article->setNom('Article de démo');
+        $article->setPrix(99.99);
+        $em->persist($article);
+        $em->flush();
+        return new Response('✅ Article créé avec ID: ' . $article->getId());
     }
 
     /**
-     * @Route("/blog/new", name="new_article")
-     * @Method({"GET", "POST"})
+     * @Route("/blog/new", name="new_article", methods={"GET", "POST"})
      */
-    public function new(Request $request)
+    public function new(Request $request, EntityManagerInterface $em): Response
     {
         $article = new Article();
         $form = $this->createFormBuilder($article)
-            ->add('nom', TextType::class)
-            ->add('prix', TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'Créer'))
+            ->add('nom', TextType::class, [
+                'label' => 'Nom de l\'article',
+                'attr' => ['placeholder' => 'Ex: Smartphone, Livre...']
+            ])
+            ->add('prix', NumberType::class, [
+                'label' => 'Prix (DT)',
+                'scale' => 2,
+                'html5' => true,
+                'attr' => ['min' => 0, 'step' => 0.01, 'placeholder' => 'Ex: 29.99']
+            ])
+            ->add('save', SubmitType::class, ['label' => '✅ Créer l\'article'])
             ->getForm();
-        
+
         $form->handleRequest($request);
-        
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $article = $form->getData();
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($article);
-            $entityManager->flush();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($article);
+            $em->flush();
+            $this->addFlash('success', '🎉 Article « ' . $article->getNom() . ' » ajouté avec succès !');
             return $this->redirectToRoute('article_list');
         }
-        
-        return $this->render('blog/new.html.twig', ['form' => $form->createView()]);
+
+        return $this->render('blog/new.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     /**
-     * @Route("/blog/{id}", name="article_show")
+     * @Route("/blog/{id}", name="article_show", requirements={"id"="\d+"})
      */
-    public function details($id)
+    public function details(Article $article): Response
     {
-        $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
-        
-        // Vérifier si l'article existe
-        if (!$article) {
-            throw $this->createNotFoundException('L\'article demandé n\'existe pas.');
-        }
-        
-        return $this->render('blog/details.html.twig', array('article' => $article));
+        return $this->render('blog/details.html.twig', [
+            'article' => $article
+        ]);
     }
 
     /**
-     * @Route("/blog/edit/{id}", name="edit_article")
-     * @Method({"GET", "POST"})
+     * @Route("/blog/edit/{id}", name="edit_article", methods={"GET", "POST"}, requirements={"id"="\d+"})
      */
-    public function edit(Request $request, $id)
+    public function edit(Request $request, Article $article, EntityManagerInterface $em): Response
     {
-        $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
-        
         $form = $this->createFormBuilder($article)
-            ->add('nom', TextType::class)
-            ->add('prix', TextType::class)
-            ->add('save', SubmitType::class, array('label' => 'Modifier'))
+            ->add('nom', TextType::class, ['label' => 'Nom'])
+            ->add('prix', NumberType::class, [
+                'label' => 'Prix (DT)',
+                'scale' => 2,
+                'html5' => true,
+                'attr' => ['min' => 0, 'step' => 0.01]
+            ])
+            ->add('save', SubmitType::class, ['label' => '💾 Enregistrer les modifications'])
             ->getForm();
-            
+
         $form->handleRequest($request);
-        
-        if($form->isSubmitted() && $form->isValid())
-        {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->flush();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+            $this->addFlash('success', '✏️ Article mis à jour avec succès !');
             return $this->redirectToRoute('article_list');
         }
-        
-        return $this->render('blog/edit.html.twig', ['form' => $form->createView()]);
+
+        return $this->render('blog/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     /**
-     * @Route("/blog/delete/{id}", name="delete_article")
-     * @Method({"DELETE"})
+     * @Route("/blog/delete/{id}", name="delete_article", methods={"POST"}, requirements={"id"="\d+"})
      */
-    public function delete(Request $request, $id)
+    public function delete(Article $article, EntityManagerInterface $em): Response
     {
-        $article = $this->getDoctrine()->getRepository(Article::class)->find($id);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($article);
-        $entityManager->flush();
-        //$response = new Response();
-        // $response->send();
+        $nom = $article->getNom();
+        $em->remove($article);
+        $em->flush();
+        $this->addFlash('success', '🗑️ Article « ' . $nom . ' » supprimé.');
+        return $this->redirectToRoute('article_list');
+    }
+
+    // Optional: Handle accidental GET delete with redirect
+    /**
+     * @Route("/blog/delete/{id}", name="delete_article_get", methods={"GET"})
+     */
+    public function deleteGet(): Response
+    {
+        $this->addFlash('error', '⚠️ Opération non autorisée. Utilisez le bouton de confirmation.');
         return $this->redirectToRoute('article_list');
     }
 
     /**
      * @Route("/blog/modify", name="modify_list")
      */
-    public function modifyList()
+    public function modifyList(EntityManagerInterface $em): Response
     {
-        $articles = $this->getDoctrine()->getRepository(Article::class)->findAll();
+        $articles = $em->getRepository(Article::class)->findAll();
         return $this->render('blog/modify_list.html.twig', ['articles' => $articles]);
     }
 }
-
-
