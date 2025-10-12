@@ -1,27 +1,35 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ title }}{% endblock %}
+{% block title %}Liste des Articles{% endblock %}
 
 {% block body %}
-<h1>{{ title }}</h1>
-
-<form method="post">
-    <label for="age">Entrez votre âge :</label>
-    <input type="number" id="age" name="age" value="{{ age|default('') }}" required>
-    <button type="submit">Valider</button>
-</form>
-
-{% if age is defined and age is not null %}
-    {% if age > 18 %}
-        <p>Tu es majeur</p>
-        <script>
-            alert("Résultat du test : Tu es majeur ({{ age }} ans)");
-        </script>
+    {% if articles %}
+        <table id="articles" class="table table-striped">
+            <thead>
+                <tr>
+                    {# <th>Article</th>
+                    <th>Actions</th> #}
+                    <th>Nom</th>
+                    <th>Prix</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for article in articles %}
+                    <tr>
+                        {# <td>{{ article }}</td> #}
+                        <td>{{ article.nom }}</td>
+                        <td>{{ article.prix }}</td>
+                        <td>
+                            <a href="/blog/{{ article.id }}" class="btn btn-dark">Détails</a>
+                            <a href="/blog/edit/{{ article.id }}" class="btn btn-dark">Modifier</a>
+                            <a href="/blog/delete/{{ article.id }}" class="btn btn-danger" onclick="return confirm('Etes-vous sûr de supprimer cet article?');">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     {% else %}
-        <p>Tu es mineur</p>
-        <script>
-            alert("Résultat du test : Tu es mineur ({{ age }} ans)");
-        </script>
+        <p>Aucun articles</p>
     {% endif %}
-{% endif %}
 {% endblock %}

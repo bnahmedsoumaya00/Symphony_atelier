@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if article %}
+        {{ article.nom }}
+    {% else %}
+        Article non trouvé
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% if article %}
+        <h1>{{ article.nom }}</h1>
+        <p><strong>Prix:</strong> {{ article.prix }}</p>
+        <hr>
+        <a href="{{ path('article_list') }}" class="btn btn-primary">Retour à la liste</a>
+    {% else %}
+        <div class="alert alert-danger">
+            <h1>Article non trouvé</h1>
+            <p>L'article demandé n'existe pas.</p>
+            <a href="{{ path('article_list') }}" class="btn btn-primary">Retour à la liste</a>
+        </div>
+    {% endif %}
+{% endblock %}

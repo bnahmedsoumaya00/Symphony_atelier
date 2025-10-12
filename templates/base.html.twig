@@ -14,6 +14,18 @@
       <ul class="navbar-nav me-auto">
         <li class="nav-item"><a class="nav-link" href="/blog">Articles</a></li>
         <li class="nav-item"><a class="nav-link" href="/blog/new">Créer un article</a></li>
+        
+        {# Boutons conditionnels selon la page #}
+        {% if app.request.get('_route') == 'article_show' %}
+          <li class="nav-item"><a class="nav-link btn btn-warning btn-sm mx-1" href="{{ path('edit_article', {'id': app.request.get('id')}) }}">Modifier</a></li>
+          <li class="nav-item"><a class="nav-link btn btn-danger btn-sm mx-1" href="{{ path('delete_article', {'id': app.request.get('id')}) }}" onclick="return confirm('Êtes-vous sûr de supprimer cet article?');">Supprimer</a></li>
+        {% endif %}
+        
+        {% if app.request.get('_route') == 'edit_article' %}
+          <li class="nav-item"><a class="nav-link btn btn-info btn-sm mx-1" href="{{ path('article_show', {'id': app.request.get('id')}) }}">Voir détails</a></li>
+          <li class="nav-item"><a class="nav-link btn btn-danger btn-sm mx-1" href="{{ path('delete_article', {'id': app.request.get('id')}) }}" onclick="return confirm('Êtes-vous sûr de supprimer cet article?');">Supprimer</a></li>
+        {% endif %}
+        
       </ul>
     </div>
   </div>
