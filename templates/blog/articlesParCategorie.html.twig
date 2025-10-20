@@ -1,37 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Articles – Soumaya{% endblock %}
+{% block title %}Recherche par Catégorie – Soumaya{% endblock %}
 
 {% block body %}
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-        <h1 class="display-5 fw-bold">Nos Articles</h1>
-        <a href="{{ path('new_article') }}" class="btn btn-primary btn-lg">
-            <i class="bi bi-plus-circle"></i> Ajouter un article
+        <h1 class="display-5 fw-bold">Articles par Catégorie</h1>
+        <a href="{{ path('article_list') }}" class="btn btn-outline-secondary btn-lg">
+            ← Retour aux articles
         </a>
     </div>
 
-    {# Formulaire de recherche par nom - Enhanced #}
-    <div class="search-card mb-5">
+    {# Formulaire de recherche par catégorie - Enhanced #}
+    <div class="category-search-card mb-5">
         <div class="search-header">
-            <i class="bi bi-search search-icon"></i>
-            <h5 class="search-title">Rechercher un article</h5>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+            </svg>
+            <h5 class="search-title">Filtrer par catégorie</h5>
         </div>
         
         {{ form_start(form, {'attr': {'class': 'search-form'}}) }}
         <div class="search-input-group">
             <div class="input-wrapper">
-                <i class="bi bi-tag input-icon"></i>
-                {{ form_widget(form.nom, {
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                </svg>
+                {{ form_widget(form.category, {
                     'attr': {
-                        'class': 'search-input',
-                        'placeholder': '🔍 Tapez le nom d\'un article...'
+                        'class': 'category-select'
                     }
                 }) }}
             </div>
             <button type="submit" class="search-btn">
-                <i class="bi bi-search"></i>
-                <span>Rechercher</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </svg>
+                <span>Filtrer</span>
             </button>
         </div>
         {{ form_end(form) }}
@@ -39,7 +44,10 @@
 
     {% if articles is defined and articles|length > 0 %}
         <div class="results-badge mb-4">
-            <i class="bi bi-check-circle-fill"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
             <span><strong>{{ articles|length }}</strong> article(s) trouvé(s)</span>
         </div>
 
@@ -64,15 +72,15 @@
 
                         <div class="mt-auto d-flex gap-2 flex-wrap">
                             <a href="{{ path('article_show', {'id': article.id}) }}" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-eye"></i> Détails
+                                Détails
                             </a>
                             <a href="{{ path('edit_article', {'id': article.id}) }}" class="btn btn-sm btn-outline-warning">
-                                <i class="bi bi-pencil"></i> Modifier
+                                Modifier
                             </a>
                             <form method="post" action="{{ path('delete_article', {'id': article.id}) }}" 
-                                  onsubmit="return confirm('Voulez-vous vraiment supprimer « {{ article.nom }} » ?');" class="d-inline">
+                                  onsubmit="return confirm('Êtes-vous sûr de supprimer cet article ?');" class="d-inline">
                                 <button type="submit" class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-trash"></i> Supprimer
+                                    Supprimer
                                 </button>
                             </form>
                         </div>
@@ -84,39 +92,40 @@
     {% else %}
         <div class="text-center py-5">
             <div class="empty-state mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;">
-                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
                 </svg>
             </div>
-            <h3 class="text-muted mb-3">Aucun article trouvé</h3>
-            <p class="lead mb-4">Commencez par en créer un !</p>
+            <h3 class="text-muted mb-3">Aucun article</h3>
+            <p class="lead mb-4">Sélectionnez une catégorie ou créez un nouvel article !</p>
             <a href="{{ path('new_article') }}" class="btn btn-primary btn-lg">
-                <i class="bi bi-plus-circle"></i> Créer votre premier article
+                Créer un article
             </a>
         </div>
     {% endif %}
 </div>
 
 <style>
-    /* Search Card Styles */
-    .search-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* Category Search Card Styles - Using Theme Colors */
+    .category-search-card {
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(99, 102, 241, 0.3);
         border-radius: 20px;
         padding: 2rem;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 10px 40px rgba(99, 102, 241, 0.2);
         position: relative;
         overflow: hidden;
     }
     
-    .search-card::before {
+    .category-search-card::before {
         content: '';
         position: absolute;
         top: -50%;
         right: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
         pointer-events: none;
     }
     
@@ -130,18 +139,18 @@
     }
     
     .search-icon {
-        font-size: 1.5rem;
-        color: #fff;
+        color: var(--primary-color);
         animation: pulse 2s infinite;
+        filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.5));
     }
     
     @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.1); }
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.1); opacity: 0.8; }
     }
     
     .search-title {
-        color: #fff;
+        color: var(--text-primary);
         margin: 0;
         font-weight: 600;
         font-size: 1.25rem;
@@ -169,34 +178,43 @@
         left: 1.25rem;
         top: 50%;
         transform: translateY(-50%);
-        color: #667eea;
-        font-size: 1.1rem;
+        color: var(--primary-color);
         z-index: 2;
     }
     
-    .search-input {
+    .category-select {
         width: 100%;
         padding: 1rem 1rem 1rem 3rem;
-        border: none;
+        border: 1px solid var(--border-color);
         border-radius: 12px;
         font-size: 1rem;
-        background: #fff;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        background: var(--bg-card);
+        color: var(--text-primary);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
+        cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236366f1' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        padding-right: 3rem;
     }
     
-    .search-input:focus {
+    .category-select:focus {
         outline: none;
-        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
         transform: translateY(-2px);
     }
     
-    .search-input::placeholder {
-        color: #a0aec0;
+    .category-select option {
+        background: var(--bg-card);
+        color: var(--text-primary);
+        padding: 0.5rem;
     }
     
     .search-btn {
-        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
         color: white;
         border: none;
         padding: 1rem 2rem;
@@ -207,22 +225,19 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
         transition: all 0.3s ease;
         white-space: nowrap;
     }
     
     .search-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 25px rgba(72, 187, 120, 0.5);
+        box-shadow: 0 6px 25px rgba(99, 102, 241, 0.5);
+        background: linear-gradient(135deg, var(--primary-hover), #3730a3);
     }
     
     .search-btn:active {
         transform: translateY(0);
-    }
-    
-    .search-btn i {
-        font-size: 1.2rem;
     }
     
     /* Results Badge */
@@ -230,12 +245,12 @@
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
         color: white;
         padding: 0.75rem 1.5rem;
         border-radius: 50px;
         font-size: 1rem;
-        box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
+        box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
         animation: slideInLeft 0.5s ease;
     }
     
@@ -250,33 +265,29 @@
         }
     }
     
-    .results-badge i {
-        font-size: 1.2rem;
-    }
-    
     /* Article Cards */
     .article-card {
-        border: none;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
         border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
     }
     
     .article-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        border-color: var(--primary-color);
     }
     
-    .badge {
-        font-weight: 500;
-        font-size: 0.85rem;
-        padding: 0.35rem 0.75rem;
-        border-radius: 8px;
+    .badge.bg-primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+        border: none;
     }
     
     .empty-state svg {
-        color: #a0aec0;
-        margin-bottom: 1rem;
+        color: var(--text-secondary);
+        opacity: 0.5;
         animation: float 3s ease-in-out infinite;
     }
     
@@ -287,7 +298,7 @@
     
     /* Responsive */
     @media (max-width: 768px) {
-        .search-card {
+        .category-search-card {
             padding: 1.5rem;
         }
         

@@ -1,36 +1,60 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Articles – Soumaya{% endblock %}
+{% block title %}Recherche par Prix – Soumaya{% endblock %}
 
 {% block body %}
 <div class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-        <h1 class="display-5 fw-bold">Nos Articles</h1>
-        <a href="{{ path('new_article') }}" class="btn btn-primary btn-lg">
-            <i class="bi bi-plus-circle"></i> Ajouter un article
+        <h1 class="display-5 fw-bold">Articles par Prix</h1>
+        <a href="{{ path('article_list') }}" class="btn btn-outline-secondary btn-lg">
+            ← Retour aux articles
         </a>
     </div>
 
-    {# Formulaire de recherche par nom - Enhanced #}
-    <div class="search-card mb-5">
+    {# Formulaire de recherche par prix - Enhanced #}
+    <div class="price-search-card mb-5">
         <div class="search-header">
-            <i class="bi bi-search search-icon"></i>
-            <h5 class="search-title">Rechercher un article</h5>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+            </svg>
+            <h5 class="search-title">Filtrer par fourchette de prix</h5>
         </div>
         
         {{ form_start(form, {'attr': {'class': 'search-form'}}) }}
         <div class="search-input-group">
             <div class="input-wrapper">
-                <i class="bi bi-tag input-icon"></i>
-                {{ form_widget(form.nom, {
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+                    <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+                {{ form_widget(form.minPrice, {
                     'attr': {
-                        'class': 'search-input',
-                        'placeholder': '🔍 Tapez le nom d\'un article...'
+                        'class': 'price-input',
+                        'placeholder': '0.00 DT'
+                    }
+                }) }}
+            </div>
+            <div class="separator">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            </div>
+            <div class="input-wrapper">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="input-icon">
+                    <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                </svg>
+                {{ form_widget(form.maxPrice, {
+                    'attr': {
+                        'class': 'price-input',
+                        'placeholder': '9999.99 DT'
                     }
                 }) }}
             </div>
             <button type="submit" class="search-btn">
-                <i class="bi bi-search"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
                 <span>Rechercher</span>
             </button>
         </div>
@@ -39,7 +63,10 @@
 
     {% if articles is defined and articles|length > 0 %}
         <div class="results-badge mb-4">
-            <i class="bi bi-check-circle-fill"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
             <span><strong>{{ articles|length }}</strong> article(s) trouvé(s)</span>
         </div>
 
@@ -64,15 +91,15 @@
 
                         <div class="mt-auto d-flex gap-2 flex-wrap">
                             <a href="{{ path('article_show', {'id': article.id}) }}" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-eye"></i> Détails
+                                Détails
                             </a>
                             <a href="{{ path('edit_article', {'id': article.id}) }}" class="btn btn-sm btn-outline-warning">
-                                <i class="bi bi-pencil"></i> Modifier
+                                Modifier
                             </a>
                             <form method="post" action="{{ path('delete_article', {'id': article.id}) }}" 
-                                  onsubmit="return confirm('Voulez-vous vraiment supprimer « {{ article.nom }} » ?');" class="d-inline">
+                                  onsubmit="return confirm('Êtes-vous sûr de supprimer cet article ?');" class="d-inline">
                                 <button type="submit" class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-trash"></i> Supprimer
+                                    Supprimer
                                 </button>
                             </form>
                         </div>
@@ -84,39 +111,41 @@
     {% else %}
         <div class="text-center py-5">
             <div class="empty-state mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;">
-                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                 </svg>
             </div>
             <h3 class="text-muted mb-3">Aucun article trouvé</h3>
-            <p class="lead mb-4">Commencez par en créer un !</p>
+            <p class="lead mb-4">Essayez avec une autre fourchette de prix !</p>
             <a href="{{ path('new_article') }}" class="btn btn-primary btn-lg">
-                <i class="bi bi-plus-circle"></i> Créer votre premier article
+                Créer un article
             </a>
         </div>
     {% endif %}
 </div>
 
 <style>
-    /* Search Card Styles */
-    .search-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    /* Price Search Card Styles - Using Theme Colors */
+    .price-search-card {
+        background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(192, 132, 252, 0.15) 100%);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(167, 139, 250, 0.3);
         border-radius: 20px;
         padding: 2rem;
-        box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 10px 40px rgba(167, 139, 250, 0.2);
         position: relative;
         overflow: hidden;
     }
     
-    .search-card::before {
+    .price-search-card::before {
         content: '';
         position: absolute;
         top: -50%;
         right: -50%;
         width: 200%;
         height: 200%;
-        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(167, 139, 250, 0.1) 0%, transparent 70%);
         pointer-events: none;
     }
     
@@ -130,18 +159,18 @@
     }
     
     .search-icon {
-        font-size: 1.5rem;
-        color: #fff;
+        color: var(--primary-color);
         animation: pulse 2s infinite;
+        filter: drop-shadow(0 0 8px rgba(167, 139, 250, 0.5));
     }
     
     @keyframes pulse {
-        0%, 100% { transform: scale(1); }
-        50% { transform: scale(1.1); }
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.1); opacity: 0.8; }
     }
     
     .search-title {
-        color: #fff;
+        color: var(--text-primary);
         margin: 0;
         font-weight: 600;
         font-size: 1.25rem;
@@ -169,34 +198,44 @@
         left: 1.25rem;
         top: 50%;
         transform: translateY(-50%);
-        color: #667eea;
-        font-size: 1.1rem;
+        color: var(--primary-color);
         z-index: 2;
     }
     
-    .search-input {
+    .price-input {
         width: 100%;
         padding: 1rem 1rem 1rem 3rem;
-        border: none;
+        border: 1px solid var(--border-color);
         border-radius: 12px;
         font-size: 1rem;
-        background: #fff;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        background: var(--bg-card);
+        color: var(--text-primary);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
     }
     
-    .search-input:focus {
+    .price-input:focus {
         outline: none;
-        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.3);
         transform: translateY(-2px);
     }
     
-    .search-input::placeholder {
-        color: #a0aec0;
+    .price-input::placeholder {
+        color: var(--text-secondary);
+        opacity: 0.6;
+    }
+    
+    .separator {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary-color);
+        padding: 0 0.5rem;
     }
     
     .search-btn {
-        background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         color: white;
         border: none;
         padding: 1rem 2rem;
@@ -207,22 +246,19 @@
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        box-shadow: 0 4px 15px rgba(72, 187, 120, 0.4);
+        box-shadow: 0 4px 15px rgba(167, 139, 250, 0.4);
         transition: all 0.3s ease;
         white-space: nowrap;
     }
     
     .search-btn:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 25px rgba(72, 187, 120, 0.5);
+        box-shadow: 0 6px 25px rgba(167, 139, 250, 0.5);
+        background: linear-gradient(135deg, var(--primary-hover), var(--secondary-color));
     }
     
     .search-btn:active {
         transform: translateY(0);
-    }
-    
-    .search-btn i {
-        font-size: 1.2rem;
     }
     
     /* Results Badge */
@@ -230,12 +266,12 @@
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+        background: linear-gradient(135deg, var(--secondary-color), var(--accent-color));
         color: white;
         padding: 0.75rem 1.5rem;
         border-radius: 50px;
         font-size: 1rem;
-        box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
+        box-shadow: 0 4px 15px rgba(192, 132, 252, 0.3);
         animation: slideInLeft 0.5s ease;
     }
     
@@ -250,33 +286,33 @@
         }
     }
     
-    .results-badge i {
-        font-size: 1.2rem;
-    }
-    
     /* Article Cards */
     .article-card {
-        border: none;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
         border-radius: 15px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         transition: all 0.3s ease;
     }
     
     .article-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 8px 25px rgba(167, 139, 250, 0.3);
+        border-color: var(--primary-color);
     }
     
-    .badge {
-        font-weight: 500;
-        font-size: 0.85rem;
-        padding: 0.35rem 0.75rem;
-        border-radius: 8px;
+    .text-purple {
+        color: var(--primary-color);
+    }
+    
+    .badge.bg-primary {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+        border: none;
     }
     
     .empty-state svg {
-        color: #a0aec0;
-        margin-bottom: 1rem;
+        color: var(--text-secondary);
+        opacity: 0.5;
         animation: float 3s ease-in-out infinite;
     }
     
@@ -287,12 +323,17 @@
     
     /* Responsive */
     @media (max-width: 768px) {
-        .search-card {
+        .price-search-card {
             padding: 1.5rem;
         }
         
         .search-input-group {
             flex-direction: column;
+        }
+        
+        .separator {
+            transform: rotate(90deg);
+            padding: 0.5rem 0;
         }
         
         .search-btn {

@@ -8,41 +8,99 @@
 <div class="container my-5">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-            <div class="card shadow">
-                <div class="card-header bg-primary text-white">
+            <div class="modern-form-card">
+                <div class="form-card-header">
+                    <div class="header-icon">
+                        {% if form.vars.data.id %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                        {% else %}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        {% endif %}
+                    </div>
                     <h3 class="mb-0">
                         {% if form.vars.data.id %}
-                            ✏️ Modifier l'article
+                            Modifier l'article
                         {% else %}
-                            ➕ Ajouter un nouvel article
+                            Ajouter un nouvel article
                         {% endif %}
                     </h3>
                 </div>
-                <div class="card-body">
-                    {{ form_start(form) }}
-                        <div class="mb-3">
-                            {{ form_label(form.nom) }}
+                <div class="form-card-body">
+                    {{ form_start(form, {'attr': {'id': 'articleForm', 'novalidate': 'novalidate'}}) }}
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                Nom de l'article
+                            </label>
                             {{ form_widget(form.nom, {
-                                'attr': {'class': 'form-control', 'placeholder': 'Ex: Smartphone...'}
-                            }) }}
-                            {{ form_errors(form.nom) }}
-                        </div>
-                        <div class="mb-3">
-                            {{ form_label(form.prix, 'Prix (DT)') }}
-                            {{ form_widget(form.prix, {
                                 'attr': {
-                                    'class': 'form-control',
-                                    'type': 'number',
-                                    'step': '0.01',
-                                    'min': '0',
-                                    'placeholder': 'Ex: 29.99'
+                                    'class': 'form-control-modern',
+                                    'placeholder': 'Ex: Smartphone Samsung Galaxy...',
+                                    'id': 'nom_input',
+                                    'required': 'required',
+                                    'minlength': '5',
+                                    'maxlength': '50'
                                 }
                             }) }}
-                            {{ form_errors(form.prix) }}
+                            {{ form_errors(form.nom, {'attr': {'class': 'error-message'}}) }}
+                            <div class="error-message" id="nom_error" style="display: none;"></div>
+                            <small class="form-hint">Entre 5 et 50 caractères</small>
                         </div>
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
-                            <a href="{{ path('article_list') }}" class="btn btn-secondary">← Annuler</a>
+
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                Prix (DT)
+                            </label>
+                            {{ form_widget(form.prix, {
+                                'attr': {
+                                    'class': 'form-control-modern',
+                                    'type': 'number',
+                                    'step': '0.01',
+                                    'min': '0.01',
+                                    'placeholder': '0.00',
+                                    'id': 'prix_input',
+                                    'required': 'required'
+                                }
+                            }) }}
+                            {{ form_errors(form.prix, {'attr': {'class': 'error-message'}}) }}
+                            <div class="error-message" id="prix_error" style="display: none;"></div>
+                            <small class="form-hint">Le prix doit être supérieur à 0</small>
+                        </div>
+
+                        <div class="form-group-modern">
+                            <label class="form-label-modern">
+                                Catégorie
+                            </label>
+                            {{ form_widget(form.category, {
+                                'attr': {
+                                    'class': 'form-select-modern',
+                                    'id': 'category_input',
+                                    'required': 'required'
+                                }
+                            }) }}
+                            {{ form_errors(form.category, {'attr': {'class': 'error-message'}}) }}
+                            <div class="error-message" id="category_error" style="display: none;"></div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit" id="submitBtn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                {% if form.vars.data.id %}Enregistrer{% else %}Créer l'article{% endif %}
+                            </button>
+                            <a href="{{ path('article_list') }}" class="btn-cancel">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                                Annuler
+                            </a>
                         </div>
                     {{ form_end(form) }}
                 </div>
@@ -50,4 +108,327 @@
         </div>
     </div>
 </div>
+
+<style>
+    .modern-form-card {
+        background: linear-gradient(145deg, rgba(51, 65, 85, 0.6), rgba(51, 65, 85, 0.4));
+        border: 1px solid rgba(99, 102, 241, 0.2);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 
+                    0 0 0 1px rgba(99, 102, 241, 0.1),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(20px);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .modern-form-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5),
+                    0 0 0 1px rgba(99, 102, 241, 0.3),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border-color: rgba(99, 102, 241, 0.4);
+    }
+
+    .form-card-header {
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .form-card-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    .header-icon {
+        width: 48px;
+        height: 48px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .header-icon svg {
+        color: white;
+    }
+
+    .form-card-header h3 {
+        color: white;
+        font-weight: 600;
+        font-size: 1.5rem;
+        margin: 0;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .form-card-body {
+        padding: 2.5rem;
+    }
+
+    .form-group-modern {
+        margin-bottom: 1.75rem;
+        position: relative;
+    }
+
+    .form-label-modern {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+        letter-spacing: 0.01em;
+    }
+
+    .form-control-modern,
+    .form-select-modern {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        background: rgba(30, 41, 59, 0.5);
+        border: 2px solid rgba(71, 85, 105, 0.5);
+        border-radius: 12px;
+        color: var(--text-primary);
+        font-size: 1rem;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        outline: none;
+    }
+
+    .form-control-modern:focus,
+    .form-select-modern:focus {
+        background: rgba(30, 41, 59, 0.7);
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15),
+                    0 8px 20px rgba(99, 102, 241, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .form-control-modern::placeholder {
+        color: rgba(203, 213, 225, 0.4);
+    }
+
+    .form-control-modern.is-invalid,
+    .form-select-modern.is-invalid {
+        border-color: #ef4444;
+        background: rgba(239, 68, 68, 0.05);
+    }
+
+    .form-hint {
+        display: block;
+        margin-top: 0.5rem;
+        color: rgba(203, 213, 225, 0.6);
+        font-size: 0.85rem;
+        font-weight: 400;
+    }
+
+    .error-message {
+        color: #f87171;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        font-weight: 500;
+    }
+
+    .form-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2.5rem;
+        flex-wrap: wrap;
+    }
+
+    .btn-submit {
+        flex: 1;
+        min-width: 180px;
+        padding: 1rem 2rem;
+        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .btn-submit:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    }
+
+    .btn-submit:active:not(:disabled) {
+        transform: translateY(-1px);
+    }
+
+    .btn-submit:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .btn-cancel {
+        padding: 1rem 2rem;
+        background: rgba(71, 85, 105, 0.3);
+        border: 2px solid rgba(71, 85, 105, 0.5);
+        border-radius: 12px;
+        color: var(--text-secondary);
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .btn-cancel:hover {
+        background: rgba(71, 85, 105, 0.5);
+        border-color: rgba(71, 85, 105, 0.8);
+        color: var(--text-primary);
+        transform: translateY(-2px);
+    }
+
+    @media (max-width: 768px) {
+        .form-card-body {
+            padding: 1.5rem;
+        }
+
+        .form-actions {
+            flex-direction: column;
+        }
+
+        .btn-submit,
+        .btn-cancel {
+            width: 100%;
+        }
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('articleForm');
+    const nomInput = document.getElementById('nom_input');
+    const prixInput = document.getElementById('prix_input');
+    const categoryInput = document.getElementById('category_input');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    const nomError = document.getElementById('nom_error');
+    const prixError = document.getElementById('prix_error');
+    const categoryError = document.getElementById('category_error');
+
+    function validateNom() {
+        const value = nomInput.value.trim();
+        if (value.length === 0) {
+            nomInput.classList.add('is-invalid');
+            nomError.textContent = 'Le nom est obligatoire.';
+            nomError.style.display = 'block';
+            return false;
+        } else if (value.length < 5) {
+            nomInput.classList.add('is-invalid');
+            nomError.textContent = 'Le nom doit contenir au moins 5 caractères.';
+            nomError.style.display = 'block';
+            return false;
+        } else if (value.length > 50) {
+            nomInput.classList.add('is-invalid');
+            nomError.textContent = 'Le nom ne doit pas dépasser 50 caractères.';
+            nomError.style.display = 'block';
+            return false;
+        } else {
+            nomInput.classList.remove('is-invalid');
+            nomError.style.display = 'none';
+            return true;
+        }
+    }
+
+    function validatePrix() {
+        const value = parseFloat(prixInput.value);
+        if (isNaN(value) || value <= 0) {
+            prixInput.classList.add('is-invalid');
+            prixError.textContent = 'Le prix doit être supérieur à 0.';
+            prixError.style.display = 'block';
+            return false;
+        } else {
+            prixInput.classList.remove('is-invalid');
+            prixError.style.display = 'none';
+            return true;
+        }
+    }
+
+    function validateCategory() {
+        if (!categoryInput.value) {
+            categoryInput.classList.add('is-invalid');
+            categoryError.textContent = 'Veuillez sélectionner une catégorie.';
+            categoryError.style.display = 'block';
+            return false;
+        } else {
+            categoryInput.classList.remove('is-invalid');
+            categoryError.style.display = 'none';
+            return true;
+        }
+    }
+
+    function checkFormValidity() {
+        const isNomValid = nomInput.value.trim().length >= 5 && nomInput.value.trim().length <= 50;
+        const isPrixValid = parseFloat(prixInput.value) > 0;
+        const isCategoryValid = categoryInput.value !== '';
+        
+        if (isNomValid && isPrixValid && isCategoryValid) {
+            submitBtn.disabled = false;
+        } else {
+            submitBtn.disabled = true;
+        }
+    }
+
+    nomInput.addEventListener('input', function() {
+        validateNom();
+        checkFormValidity();
+    });
+
+    prixInput.addEventListener('input', function() {
+        validatePrix();
+        checkFormValidity();
+    });
+
+    categoryInput.addEventListener('change', function() {
+        validateCategory();
+        checkFormValidity();
+    });
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const isNomValid = validateNom();
+        const isPrixValid = validatePrix();
+        const isCategoryValid = validateCategory();
+
+        if (!isNomValid || !isPrixValid || !isCategoryValid) {
+            alert('Veuillez remplir tous les champs correctement avant de continuer.');
+            return false;
+        }
+
+        form.submit();
+    });
+
+    checkFormValidity();
+});
+</script>
 {% endblock %}

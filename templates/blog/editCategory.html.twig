@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Modifier la catégorie – {{ category.titre }}
+{% endblock %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title mb-0 text-purple">
+                        ✏️ Modifier la catégorie
+                    </h2>
+                </div>
+                <div class="card-body p-4">
+                    {{ form_start(form) }}
+                    
+                    <div class="mb-4">
+                        {{ form_label(form.titre, 'Nom de la catégorie', {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                        {{ form_widget(form.titre, {'attr': {'class': 'form-control form-control-lg', 'placeholder': 'Ex: Symfony, PHP, JavaScript...'}}) }}
+                        {{ form_errors(form.titre) }}
+                    </div>
+
+                    <div class="mb-4">
+                        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label fw-semibold'}}) }}
+                        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'rows': 4, 'placeholder': 'Description de la catégorie...'}}) }}
+                        {{ form_errors(form.description) }}
+                    </div>
+
+                    <div class="d-flex gap-2 justify-content-between align-items-center">
+                        <a href="{{ path('category_list') }}" class="btn btn-secondary">
+                            ← Retour
+                        </a>
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                💾 Enregistrer les modifications
+                            </button>
+                        </div>
+                    </div>
+
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

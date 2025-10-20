@@ -1,8 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    {% if form.vars.data.id %}Modifier « {{ form.vars.data.nom }} »{% else %}Ajouter un nouvel article{% endif %}
-{% endblock %}
+{% block title %}Ajouter une catégorie{% endblock %}
 
 {% block body %}
 <div class="container my-5">
@@ -11,83 +9,51 @@
             <div class="modern-form-card">
                 <div class="form-card-header">
                     <div class="header-icon">
-                        {% if form.vars.data.id %}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                            </svg>
-                        {% else %}
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="12" y1="5" x2="12" y2="19"></line>
-                                <line x1="5" y1="12" x2="19" y2="12"></line>
-                            </svg>
-                        {% endif %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                        </svg>
                     </div>
-                    <h3 class="mb-0">
-                        {% if form.vars.data.id %}
-                            Modifier l'article
-                        {% else %}
-                            Ajouter un nouvel article
-                        {% endif %}
-                    </h3>
+                    <h3 class="mb-0">Ajouter une catégorie</h3>
                 </div>
                 <div class="form-card-body">
-                    {{ form_start(form, {'attr': {'id': 'articleForm', 'novalidate': 'novalidate'}}) }}
+                    {{ form_start(form, {'attr': {'id': 'categoryForm', 'novalidate': 'novalidate'}}) }}
                         <div class="form-group-modern">
                             <label class="form-label-modern">
-                                <span class="label-icon">📝</span>
-                                Nom de l'article
+                                Titre
                             </label>
-                            {{ form_widget(form.nom, {
+                            {{ form_widget(form.titre, {
                                 'attr': {
                                     'class': 'form-control-modern',
-                                    'placeholder': 'Ex: Smartphone Samsung Galaxy...',
-                                    'id': 'nom_input',
+                                    'placeholder': 'Ex: Électronique, Vêtements, Maison...',
                                     'required': 'required',
-                                    'minlength': '5',
-                                    'maxlength': '50'
+                                    'minlength': '3',
+                                    'maxlength': '255',
+                                    'id': 'titre_input'
                                 }
                             }) }}
-                            {{ form_errors(form.nom, {'attr': {'class': 'error-message'}}) }}
-                            <div class="error-message" id="nom_error" style="display: none;"></div>
-                            <small class="form-hint">Entre 5 et 50 caractères</small>
+                            {{ form_errors(form.titre, {'attr': {'class': 'error-message'}}) }}
+                            <div class="error-message" id="titre_error" style="display: none;"></div>
+                            <small class="form-hint">Entre 3 et 255 caractères</small>
                         </div>
 
                         <div class="form-group-modern">
                             <label class="form-label-modern">
-                                <span class="label-icon">💰</span>
-                                Prix (DT)
+                                Description
                             </label>
-                            {{ form_widget(form.prix, {
+                            {{ form_widget(form.description, {
                                 'attr': {
                                     'class': 'form-control-modern',
-                                    'type': 'number',
-                                    'step': '0.01',
-                                    'min': '0.01',
-                                    'placeholder': '0.00',
-                                    'id': 'prix_input',
-                                    'required': 'required'
+                                    'placeholder': 'Décrivez cette catégorie en quelques mots...',
+                                    'rows': '4',
+                                    'required': 'required',
+                                    'minlength': '10',
+                                    'maxlength': '500',
+                                    'id': 'description_input'
                                 }
                             }) }}
-                            {{ form_errors(form.prix, {'attr': {'class': 'error-message'}}) }}
-                            <div class="error-message" id="prix_error" style="display: none;"></div>
-                            <small class="form-hint">Le prix doit être supérieur à 0</small>
-                        </div>
-
-                        <div class="form-group-modern">
-                            <label class="form-label-modern">
-                                <span class="label-icon">🏷️</span>
-                                Catégorie
-                            </label>
-                            {{ form_widget(form.category, {
-                                'attr': {
-                                    'class': 'form-select-modern',
-                                    'id': 'category_input',
-                                    'required': 'required'
-                                }
-                            }) }}
-                            {{ form_errors(form.category, {'attr': {'class': 'error-message'}}) }}
-                            <div class="error-message" id="category_error" style="display: none;"></div>
+                            {{ form_errors(form.description, {'attr': {'class': 'error-message'}}) }}
+                            <div class="error-message" id="description_error" style="display: none;"></div>
+                            <small class="form-hint">Entre 10 et 500 caractères</small>
                         </div>
 
                         <div class="form-actions">
@@ -95,7 +61,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="20 6 9 17 4 12"></polyline>
                                 </svg>
-                                {% if form.vars.data.id %}Enregistrer{% else %}Créer l'article{% endif %}
+                                Créer la catégorie
                             </button>
                             <a href="{{ path('article_list') }}" class="btn-cancel">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -134,7 +100,7 @@
     }
 
     .form-card-header {
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
         padding: 2rem;
         position: relative;
         overflow: hidden;
@@ -198,13 +164,7 @@
         letter-spacing: 0.01em;
     }
 
-    .label-icon {
-        font-size: 1.2rem;
-        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-    }
-
-    .form-control-modern,
-    .form-select-modern {
+    .form-control-modern {
         width: 100%;
         padding: 1rem 1.25rem;
         background: rgba(30, 41, 59, 0.5);
@@ -214,10 +174,11 @@
         font-size: 1rem;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         outline: none;
+        resize: vertical;
+        font-family: inherit;
     }
 
-    .form-control-modern:focus,
-    .form-select-modern:focus {
+    .form-control-modern:focus {
         background: rgba(30, 41, 59, 0.7);
         border-color: var(--primary-color);
         box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15),
@@ -229,8 +190,7 @@
         color: rgba(203, 213, 225, 0.4);
     }
 
-    .form-control-modern.is-invalid,
-    .form-select-modern.is-invalid {
+    .form-control-modern.is-invalid {
         border-color: #ef4444;
         background: rgba(239, 68, 68, 0.05);
     }
@@ -248,13 +208,6 @@
         font-size: 0.875rem;
         margin-top: 0.5rem;
         font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-    }
-
-    .error-message::before {
-        content: '⚠';
     }
 
     .form-actions {
@@ -268,7 +221,7 @@
         flex: 1;
         min-width: 180px;
         padding: 1rem 2rem;
-        background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+        background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
         border: none;
         border-radius: 12px;
         color: white;
@@ -276,7 +229,7 @@
         font-size: 1rem;
         cursor: pointer;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -285,8 +238,8 @@
 
     .btn-submit:hover:not(:disabled) {
         transform: translateY(-3px);
-        box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
-        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+        background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
     }
 
     .btn-submit:active:not(:disabled) {
@@ -340,108 +293,82 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const form = document.getElementById('articleForm');
-    const nomInput = document.getElementById('nom_input');
-    const prixInput = document.getElementById('prix_input');
-    const categoryInput = document.getElementById('category_input');
+    const form = document.getElementById('categoryForm');
+    const titreInput = document.getElementById('titre_input');
+    const descriptionInput = document.getElementById('description_input');
     const submitBtn = document.getElementById('submitBtn');
-    
-    const nomError = document.getElementById('nom_error');
-    const prixError = document.getElementById('prix_error');
-    const categoryError = document.getElementById('category_error');
+    const titreError = document.getElementById('titre_error');
+    const descriptionError = document.getElementById('description_error');
 
-    function validateNom() {
-        const value = nomInput.value.trim();
-        if (value.length === 0) {
-            nomInput.classList.add('is-invalid');
-            nomError.textContent = 'Le nom est obligatoire.';
-            nomError.style.display = 'block';
-            return false;
-        } else if (value.length < 5) {
-            nomInput.classList.add('is-invalid');
-            nomError.textContent = 'Le nom doit contenir au moins 5 caractères.';
-            nomError.style.display = 'block';
-            return false;
-        } else if (value.length > 50) {
-            nomInput.classList.add('is-invalid');
-            nomError.textContent = 'Le nom ne doit pas dépasser 50 caractères.';
-            nomError.style.display = 'block';
-            return false;
-        } else {
-            nomInput.classList.remove('is-invalid');
-            nomError.style.display = 'none';
-            return true;
-        }
-    }
-
-    function validatePrix() {
-        const value = parseFloat(prixInput.value);
-        if (isNaN(value) || value <= 0) {
-            prixInput.classList.add('is-invalid');
-            prixError.textContent = 'Le prix doit être supérieur à 0.';
-            prixError.style.display = 'block';
-            return false;
-        } else {
-            prixInput.classList.remove('is-invalid');
-            prixError.style.display = 'none';
-            return true;
-        }
-    }
-
-    function validateCategory() {
-        if (!categoryInput.value) {
-            categoryInput.classList.add('is-invalid');
-            categoryError.textContent = 'Veuillez sélectionner une catégorie.';
-            categoryError.style.display = 'block';
-            return false;
-        } else {
-            categoryInput.classList.remove('is-invalid');
-            categoryError.style.display = 'none';
-            return true;
-        }
-    }
-
-    function checkFormValidity() {
-        const isNomValid = nomInput.value.trim().length >= 5 && nomInput.value.trim().length <= 50;
-        const isPrixValid = parseFloat(prixInput.value) > 0;
-        const isCategoryValid = categoryInput.value !== '';
+    function validateField(input, errorDiv, minLength) {
+        const value = input.value.trim();
         
-        if (isNomValid && isPrixValid && isCategoryValid) {
-            submitBtn.disabled = false;
+        if (value.length === 0) {
+            input.classList.add('is-invalid');
+            errorDiv.style.display = 'block';
+            errorDiv.textContent = 'Ce champ est obligatoire.';
+            return false;
+        } else if (value.length < minLength) {
+            input.classList.add('is-invalid');
+            errorDiv.style.display = 'block';
+            errorDiv.textContent = `Minimum ${minLength} caractères requis.`;
+            return false;
         } else {
-            submitBtn.disabled = true;
+            input.classList.remove('is-invalid');
+            errorDiv.style.display = 'none';
+            return true;
         }
     }
 
-    nomInput.addEventListener('input', function() {
-        validateNom();
+    titreInput.addEventListener('input', function() {
+        validateField(titreInput, titreError, 3);
         checkFormValidity();
     });
 
-    prixInput.addEventListener('input', function() {
-        validatePrix();
+    descriptionInput.addEventListener('input', function() {
+        validateField(descriptionInput, descriptionError, 10);
         checkFormValidity();
     });
 
-    categoryInput.addEventListener('change', function() {
-        validateCategory();
-        checkFormValidity();
+    titreInput.addEventListener('blur', function() {
+        validateField(titreInput, titreError, 3);
+    });
+
+    descriptionInput.addEventListener('blur', function() {
+        validateField(descriptionInput, descriptionError, 10);
     });
 
     form.addEventListener('submit', function(e) {
         e.preventDefault();
 
-        const isNomValid = validateNom();
-        const isPrixValid = validatePrix();
-        const isCategoryValid = validateCategory();
+        const isTitreValid = validateField(titreInput, titreError, 3);
+        const isDescriptionValid = validateField(descriptionInput, descriptionError, 10);
 
-        if (!isNomValid || !isPrixValid || !isCategoryValid) {
-            alert('⚠️ Veuillez remplir tous les champs correctement avant de continuer.');
+        if (!isTitreValid || !isDescriptionValid) {
+            alert('Veuillez remplir tous les champs correctement avant de continuer.');
+            
+            if (!isTitreValid) {
+                titreInput.focus();
+            } else if (!isDescriptionValid) {
+                descriptionInput.focus();
+            }
+            
             return false;
         }
 
         form.submit();
     });
+
+    function checkFormValidity() {
+        const titreValue = titreInput.value.trim();
+        const descriptionValue = descriptionInput.value.trim();
+        
+        if (titreValue.length < 3 || descriptionValue.length < 10) {
+            submitBtn.disabled = true;
+        } else {
+            submitBtn.disabled = false;
+        }
+    }
 
     checkFormValidity();
 });

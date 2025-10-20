@@ -47,6 +47,24 @@ class ArticleRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Find articles by price range
+     * @param float|null $minValue
+     * @param float|null $maxValue
+     * @return Article[]
+     */
+    public function findByPriceRange($minValue, $maxValue)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.prix >= :minVal')
+            ->setParameter('minVal', $minValue)
+            ->andWhere('a.prix <= :maxVal')
+            ->setParameter('maxVal', $maxValue)
+            ->orderBy('a.prix', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Article[] Returns an array of Article objects
     //  */

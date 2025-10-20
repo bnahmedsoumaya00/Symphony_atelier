@@ -10,6 +10,17 @@
         </div>
         <div class="card-body">
             <p class="fs-3 text-purple fw-bold">{{ article.prix }} DT</p>
+            
+            {# ✅ TP5: Display category in details page #}
+            <p class="text-muted">
+                🏷️ <strong>Catégorie :</strong> 
+                {% if article.category %}
+                    {{ article.category.titre }}
+                {% else %}
+                    <em>Aucune catégorie</em>
+                {% endif %}
+            </p>
+
             <p class="text-muted">ID de l'article : <code>{{ article.id }}</code></p>
             <hr>
             <div class="d-flex flex-wrap gap-2">

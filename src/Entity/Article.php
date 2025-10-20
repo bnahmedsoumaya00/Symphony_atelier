@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=ArticleRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  */
 class Article
 {
@@ -19,13 +19,27 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="Le nom est obligatoire.")
+     * @Assert\Length(
+     *     min=5,
+     *     max=50,
+     *     minMessage="Le nom doit comporter au moins {{ limit }} caractères",
+     *     maxMessage="Le nom ne doit pas dépasser {{ limit }} caractères"
+     * )
      */
     private $nom;
 
     /**
-     * @ORM\Column(type="decimal", precision=10, scale=2)  <!-- Allow 2 decimal places -->
+     * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @Assert\NotBlank(message="Le prix est obligatoire.")
+     * @Assert\Positive(message="Le prix doit être supérieur à 0")
      */
     private $prix;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="articles")
+     */
+    private $category;
 
     public function getId(): ?int
     {
@@ -43,21 +57,26 @@ class Article
         return $this;
     }
 
-    // ✅ Return as string (Doctrine stores decimal as string), but we'll cast in forms
-    public function getPrix(): ?string
+    public function getPrix()
     {
         return $this->prix;
     }
 
-    // ✅ Accept float or string, but store as string (Doctrine requirement)
     public function setPrix($prix): self
     {
-        // Normalize: ensure it's a number with 2 decimals
-        if (is_numeric($prix)) {
-            $this->prix = number_format((float)$prix, 2, '.', '');
-        } else {
-            $this->prix = '0.00';
-        }
+        $this->prix = $prix;
+        return $this;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
         return $this;
     }
 }
